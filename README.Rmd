@@ -13,19 +13,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-# data.fakeR
+# data.fakeR: generate fake data in R
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/ChronoScrat/data-fakeR/workflows/R-CMD-check/badge.svg)](https://github.com/ChronoScrat/data-fakeR/actions)
 <!-- badges: end -->
 
-The goal of data.fakeR is to ...
+This package is an R application of dunnhumby's [data-faker](https://github.com/dunnhumby/data-faker). It allows users to generate fake datasets in any format from a given schema file.
 
 ## Installation
 
-You can install the development version of data.fakeR like so:
+This project is still in development. If you want to install it, run:
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+``` {r, eval = FALSE}
+
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("ChronoScrat/data-fakeR")
+
 ```
 
 ## Example

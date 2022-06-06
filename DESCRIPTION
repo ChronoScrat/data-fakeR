@@ -1,12 +1,15 @@
 Package: data.fakeR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: data fakeR: generate fake data in R
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: MIT + file LICENSE
+Author: Nathanael Rolim
+Maintainer: Nathanael Rolim <nathanael.rolim@gmail.com>
+Description: This package allows users to generate fake data in any format from a given
+    schema file. It is based on dunnhumby's data-faker, a Scala Application.
+URL: https://github.com/ChronoScrat/data-fakeR/
+Imports:
+    yaml
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.0
