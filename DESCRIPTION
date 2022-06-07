@@ -8,7 +8,9 @@ Description: This package allows users to generate fake data in any format from 
     schema file. It is based on dunnhumby's data-faker, a Scala Application.
 URL: https://github.com/ChronoScrat/data-fakeR/
 Imports:
-    yaml
+    yaml,
+    glue,
+    rlang
 License: MIT
 Encoding: UTF-8
 LazyData: true
