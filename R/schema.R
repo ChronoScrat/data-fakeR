@@ -30,7 +30,7 @@ verify_schema <- function(list){
   ## (a) Each table is named;
   ## (b) Each table has a rows number;
   ## (c) Each table has at least ONE column
-  for(i in 1:length(list)){
+  for(i in 1:length(list$tables)){
 
     # (a)
     if("name" %in% names(list$tables[[i]]) == FALSE){
@@ -94,7 +94,12 @@ import_schema <- function(file = ""){
   tables <- yaml::read_yaml(file)
 
   # Run verify_schema on 'tables' to make sure the schema is correct
-  verify_schema(tables)
+  if(verify_schema(tables) == TRUE){
+    return(TRUE)
+  } else{
+    return(FALSE)
+  }
+
 }
 
 

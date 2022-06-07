@@ -1,0 +1,65 @@
+tables:
+- name: customers
+  rows: 10
+  columns:
+  - name: customer_id
+    data_type: Int
+    column_type: Sequential
+    start: 0
+    step: 1
+  - name: customer_code
+    column_type: Expression
+    expression: concat('0000000000', customer_id)
+
+- name: products
+  rows: By my aged grandmother, that do be incredible!
+  columns:
+  - name: product_id
+    data_type: Int
+    column_type: Sequential
+    start: 0
+    step: 1
+  - name: product_code
+    column_type: Expression
+    expression: concat('0000000000', product_id)
+
+- name: transactions
+  rows: 100
+  columns:
+  - name: customer_id
+    data_type: Int
+    column_type: Random
+    min: 0
+    max: 10 # number of customers generated
+  - name: product_id
+    data_type: Int
+    column_type: Random
+    min: 0
+    max: 200
+  - name: quantity
+    data_type: Int
+    column_type: Random
+    min: 0
+    max: 10
+  - name: cost
+    data_type: Float
+    column_type: Random
+    min: 1
+    max: 5
+    decimal_places: 2
+  - name: discount
+    data_type: Float
+    column_type: Random
+    min: 1
+    max: 2
+    decimal_places: 2
+  - name: spend
+    column_type: Expression
+    expression: round((cost * discount) * quantity, 2)
+  - name: date
+    data_type: Date
+    column_type: Random
+    min: 2017-01-01
+    max: 2018-01-01
+  partitions:
+    - date

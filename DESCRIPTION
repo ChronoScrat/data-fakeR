@@ -1,10 +1,10 @@
 Package: data.fakeR
 Type: Package
-Title: data fakeR: generate fake data in R
+Title: Data fakeR: generate fake data in R
 Version: 0.1.0
 Author: Nathanael Rolim
 Maintainer: Nathanael Rolim <nathanael.rolim@gmail.com>
-Description: This package allows users to generate fake data in any format from a given
+Description: Data fakeR allows users to generate fake data in any format from a given
     schema file. It is based on dunnhumby's data-faker, a Scala Application.
 URL: https://github.com/ChronoScrat/data-fakeR/
 Imports:
@@ -15,3 +15,6 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.0
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
