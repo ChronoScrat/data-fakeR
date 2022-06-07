@@ -1,8 +1,8 @@
 # Test for the functions in schema.R
 
 ## verify_schema
-cor_schema <- yaml::read_yaml("test_yaml/schema.yaml")
-wrg_schema <- yaml::read_yaml("test_yaml/wrong.yaml")
+cor_schema <- yaml::read_yaml("test_yaml/schema.yaml", readLines.warn = FALSE)
+wrg_schema <- yaml::read_yaml("test_yaml/wrong.yaml", readLines.warn = FALSE)
 
 test_that("Test if verify_schema parses the correct schema",{
   expect_equal(verify_schema(cor_schema), TRUE)

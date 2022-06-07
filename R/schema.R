@@ -63,6 +63,43 @@ verify_schema <- function(list){
 
   }
 
+  # Third, we need to make sure that all columns:
+  ## (a) have a name;
+  ## (b) have a valid data type
+  ## (c) have a column type
+  ## (d) and that the column type is configured correctly
+
+  for(i in 1:length(list$tables)){
+
+    for(j in 1:length(list$tables[[i]]$columns)){
+
+      # (a)
+      if("name" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+        rlang::abort(
+          glue::glue("Column {j} in Table {i} is not named.")
+        )
+      }
+
+      # (b) -- STILL NEEDS TO VERIFY VALIDITY
+      #if("data_type" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+      #  rlang::abort(
+      #    glue::glue("Column {j} in Table {i} has no data_type.")
+      #  )
+      #}
+
+      # (c)
+      if("column_type" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+        rlang::abort(
+          glue::glue("Column {j} in Table {i} has no data_type.")
+        )
+      }
+
+      # (d)
+
+    }
+
+  }
+
   return(TRUE)
 
 }
@@ -91,7 +128,7 @@ verify_schema <- function(list){
 import_schema <- function(file = ""){
 
   # Read the YAML file
-  tables <- yaml::read_yaml(file)
+  tables <- yaml::read_yaml(file, readLines.warn = FALSE)
 
   # Run verify_schema on 'tables' to make sure the schema is correct
   if(verify_schema(tables) == TRUE){

@@ -22,11 +22,13 @@ jobs:
 
       - uses: r-lib/actions/setup-renv@v1
 
-      - name: Install rmarkdown
-        run: Rscript -e 'install.packages("devtools")'
+      - name: Install devtools
+        run: |
+          Rscript -e 'install.packages("devtools")'
 
       - name: Render README
-        run: Rscript -e 'devtools::build_readme()'
+        run: |
+          Rscript -e 'devtools::build_readme()'
 
       - name: Commit Results
         run: |
