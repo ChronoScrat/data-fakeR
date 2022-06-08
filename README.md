@@ -1,16 +1,18 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# data.fakeR: generate fake data in R
+# data.fakeR: Generate Fake Data in R
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ChronoScrat/data-fakeR/workflows/R-CMD-check/badge.svg)](https://github.com/ChronoScrat/data-fakeR/actions)
 <!-- badges: end -->
 
-This package is an R application of dunnhumby’s
+This package is an R version of dunnhumby’s
 [data-faker](https://github.com/dunnhumby/data-faker). It allows users
 to generate fake datasets in any format from a given schema file.
+
+**Attention**: This package is still a Work In Progress.
 
 ## Installation
 
