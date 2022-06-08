@@ -80,12 +80,23 @@ verify_schema <- function(list){
         )
       }
 
-      # (b) -- STILL NEEDS TO VERIFY VALIDITY
-      #if("data_type" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
-      #  rlang::abort(
-      #    glue::glue("Column {j} in Table {i} has no data_type.")
-      #  )
-      #}
+      # (b) -- Data types are not actually necessary, but R can only infer three types:
+      # for the columns: character, integer and double. So even though columns without
+      # a data_type should still be valid, they will be read as character.
+
+      ## TODO Add a warning in case a column has no data_type.
+
+      if("data_type" %in% names(list$tables[[i]]$columns[[j]]) == TRUE){
+
+        dt_type <- list$tables[[i]]$columns[[j]]$data_type
+
+        if(dt_type %in% c("Integer","Double","Date","Timestamp","Character","Logical") == FALSE){
+          rlang::abort(
+            glue::glue("Data type in Column {j} in Table {i} is not supported.")
+          )
+        }
+
+      }
 
       # (c)
       if("column_type" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
@@ -95,6 +106,65 @@ verify_schema <- function(list){
       }
 
       # (d)
+      clmn_type <- list$tables[[i]]$columns[[j]]$column_type
+
+      if(clmn_type %in% c("Fixed", "Random", "Selection", "Sequential", "Expression") == FALSE){
+        rlang::abort(
+          glue::glue("Column type in Column {j} in Table {i} is not supported.")
+        )
+      }
+
+      ## Verify requirements for each column type
+      ## TODO Add requirements for 'data_type' as 'Random' and 'Sequential' cannot be 'character', 'Selection' and 'Sequential' cannot be 'logical', and expression can only be 'character'.
+
+      if(clmn_type == "Fixed"){
+
+        if("value" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Fixed' but has no value.")
+          )
+        }
+
+      } else if(clmn_type == "Random"){
+
+        if("min" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Random' but has no min value.")
+          )
+        }
+
+        if("max" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Random' but has no max value.")
+          )
+        }
+
+      #} else if(clmn_type == "Selection"){
+
+      } else if(clmn_type == "Sequential"){
+
+        if("start" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Sequential' but has no start value.")
+          )
+        }
+
+        if("step" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Random' but has no step value.")
+          )
+        }
+
+      } else if(clmn_type == "Expression"){
+
+        if("expression" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Expression' but has no expression was provided.")
+          )
+        }
+
+      }
+
 
     }
 
