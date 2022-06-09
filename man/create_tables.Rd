@@ -10,9 +10,10 @@ create_tables(list)
 \item{list}{The list object created by the YAML file.}
 }
 \value{
-List
+A list of dataframes specified in the schema list.
 }
 \description{
 A function that creates the tables provided in the configuration schema. Normally,
- it returns dataframes.
+ it returns dataframes. This function can be used on its own, but it is better if it is called
+ after `import_schema`.s
 }

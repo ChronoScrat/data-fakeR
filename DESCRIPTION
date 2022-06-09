@@ -6,7 +6,8 @@ Author: Nathanael Rolim
 Maintainer: Nathanael Rolim <nathanael.rolim@gmail.com>
 Description: An R version of dunnhumby's data-faker. It allows users to generate
     fake datasets in any format from a given schema.
-URL: https://github.com/ChronoScrat/data-fakeR/
+URL: https://github.com/ChronoScrat/data-fakeR/,
+    https://chronoscrat.github.io/data-fakeR/
 Imports:
     yaml,
     glue,

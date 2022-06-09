@@ -11,5 +11,5 @@ test_that("Test if verify_schema parses the correct schema",{
 
 ## import_schema
 test_that("Test if import_schema imports the yaml file",{
-  expect_equal(import_schema(testthat::test_path("test_yaml/schema.yaml")), TRUE)
+  expect_equal(import_schema(testthat::test_path("test_yaml/schema.yaml")) |> typeof() , "list")
 })

@@ -9,9 +9,12 @@ import_schema(file = "")
 \arguments{
 \item{file}{The YAML schema file}
 }
+\value{
+A list containing the tables schema.
+}
 \description{
-This function reads and parses the YAML schema file. It also verifies
- if the schema is correct and if all arguments are valid.
+A wrapper function for reading a YAML schema file. It calls `verify_schema` to test whether the
+ imported schema is correct for use with this package.
 }
 \examples{
  \dontrun{

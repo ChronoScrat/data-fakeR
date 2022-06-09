@@ -1,12 +1,14 @@
 #' @title Create Tables
 #'
 #' @description A function that creates the tables provided in the configuration schema. Normally,
-#'  it returns dataframes.
+#'  it returns dataframes. This function can be used on its own, but it is better if it is called
+#'  after `import_schema`.s
 #'
 #' @param list The list object created by the YAML file.
 #'
-#' @returns List
+#' @returns A list of dataframes specified in the schema list.
 #'
+#' @export
 create_tables <- function(list){
 
   rtn_list <- list()

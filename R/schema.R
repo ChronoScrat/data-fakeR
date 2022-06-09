@@ -5,7 +5,15 @@
 #'
 #' @param list The list object created by the YAML file.
 #'
-#' @return Logical
+#' @details A function the verify whether a given schema is correct for use with
+#'  the `data.fakeR` package. It performs the following checks:
+#'  \itemize{
+#'   \item 1 - First, it verifies whether a list named `tables` exists. If it does, then it verifies whether this list contains at least one element.
+#'   \item 2 - Second, it checks if each table: (a) is named, (b) has a given number of rows, and (c) has at least one column.
+#'   \item 3 - Finally, it loops over all columns to determine if they: (a) have a name, (b) have a valid data type (given the column type), and (c) have a valid column type.
+#'  }
+#'
+#' @return Returns `TRUE` if the schema parses correctly, or fails otherwise.
 #'
 #' @examples
 #'  \dontrun{
@@ -80,9 +88,8 @@ verify_schema <- function(list){
         )
       }
 
-      # (b) -- Data types are not actually necessary, but R can only infer three types:
-      # for the columns: character, integer and double. So even though columns without
-      # a data_type should still be valid, they will be read as character.
+      # (b) -- Data types are only necessary for 'Random' and 'Sequential' column types, but users
+      # are free to add them to all other types.
 
       ## TODO Add a warning in case a column has no data_type.
 
@@ -117,6 +124,8 @@ verify_schema <- function(list){
       ## Verify requirements for each column type
       ## TODO Add requirements for 'data_type' as 'Random' and 'Sequential' cannot be 'character', 'Selection' and 'Sequential' cannot be 'logical', and expression can only be 'character'.
 
+      dt_type <- list$tables[[i]]$columns[[j]]$data_type
+
       if(clmn_type == "Fixed"){
 
         if("value" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
@@ -139,6 +148,12 @@ verify_schema <- function(list){
           )
         }
 
+        if(dt_type == "Character"){
+          rlang::abort(
+            glue::glue("Data type of Column {j} in Table {i} is not supported for columns of type 'Random'.")
+          )
+        }
+
       #} else if(clmn_type == "Selection"){
 
       } else if(clmn_type == "Sequential"){
@@ -152,6 +167,12 @@ verify_schema <- function(list){
         if("step" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
           rlang::abort(
             glue::glue("Column {j} in Table {i} is of type 'Random' but has no step value.")
+          )
+        }
+
+        if(dt_type == "Character" | dt_type == "Logical"){
+          rlang::abort(
+            glue::glue("Data type of Column {j} in Table {i} is not supported for columns of type 'Random'.")
           )
         }
 
@@ -180,10 +201,12 @@ verify_schema <- function(list){
 
 #' @title Import schema
 #'
-#' @description This function reads and parses the YAML schema file. It also verifies
-#'  if the schema is correct and if all arguments are valid.
+#' @description A wrapper function for reading a YAML schema file. It calls `verify_schema` to test whether the
+#'  imported schema is correct for use with this package.
 #'
 #' @param file The YAML schema file
+#'
+#' @return A list containing the tables schema.
 #'
 #' @importFrom yaml read_yaml
 #'
@@ -202,9 +225,7 @@ import_schema <- function(file = ""){
 
   # Run verify_schema on 'tables' to make sure the schema is correct
   if(verify_schema(tables) == TRUE){
-    return(TRUE)
-  } else{
-    return(FALSE)
+    return(tables)
   }
 
 }
