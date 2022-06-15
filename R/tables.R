@@ -2,7 +2,7 @@
 #'
 #' @description A function that creates the tables provided in the configuration schema. Normally,
 #'  it returns dataframes. This function can be used on its own, but it is better if it is called
-#'  after `import_schema`.s
+#'  after `import_schema`.
 #'
 #' @param list The list object created by the YAML file.
 #'
@@ -75,8 +75,6 @@ create_column <- function(clmnList, frame){
   # that should be relatively straightforward. But for 'Sequential' and 'Random',
   # it should take into consideration the data_type.
 
-  # TODO Make Random columns of Logical data_type convert 0 and 1 to FALSE and TRUE.
-
   if(clmn_type == "Fixed"){
 
     frame[clmn_name] <- clmnList$value
@@ -92,6 +90,9 @@ create_column <- function(clmnList, frame){
 
   } else if(clmn_type == "Sequential"){
 
+    # First, we must determine the data type of the column. Sequential columns
+    # require a data type.
+
     start <- clmnList$start
 
     if(clmnList$data_type == "Integer"){
@@ -100,7 +101,7 @@ create_column <- function(clmnList, frame){
       start <- as.double(start)
     } else if(clmnList$data_type == "Date") {
       start <- lubridate::as_date(start)
-    } else {
+    } else { # Timestamp
       start <- lubridate::as_datetime(start)
     }
 
@@ -111,10 +112,16 @@ create_column <- function(clmnList, frame){
 
   } else if(clmn_type == "Random") {
 
+    # First, we must get the min and max values from the column; then, we must
+    # determine the type of data we are using. This column is one of the few that
+    # require a data type.
+
     min <- clmnList$min
     max <- clmnList$max
 
     if(clmnList$data_type == "Integer"){
+
+      # TODO Substitute `runif` by `sample`
 
       frame[clmn_name] <- as.integer( runif( nrow(frame), min = min, max = max ) )
 
@@ -136,9 +143,55 @@ create_column <- function(clmnList, frame){
 
       frame[clmn_name] <- lubridate::as_datetime( runif( nrow(frame), min = min, max = max ) )
 
-    } else{ # Logical
+    } else if(clmnList$data_type == "Selection"){ # Logical
 
-      frame[clmn_name] <- as.integer( runif( nrow(frame), min = 0, max = 1.9 ) )
+      # First, get all options in a vector:
+
+      opts <- unlist(strsplit(clmnList$options, split = ","))
+
+      # Then, verify whether the probabilities have been supplied. If they have,
+      # we must get them into a vector and verify if *that* vector has the same
+      # length as our 'opts' vector.
+
+      if("prob" %in% names(clmnList)){
+
+        probs <- as.numeric(unlist(strsplit(clmnList$prob, split = ",")))
+
+        if(length(probs) != length(opts)){
+          abort("In column of type 'Sequential', the probabilities vector must have the same length as the options vector.")
+        }
+
+        frame[clmn_name] <- sample(opts,
+                                   size = nrow(frame),
+                                   replace = TRUE,
+                                   prob = probs)
+
+      } else{
+
+        # If a probabilities vector was not supplied, then merely use the 'opts'
+        # vector to sample from.
+
+        frame[clmn_name] <- sample(opts,
+                                   size = nrow(frame),
+                                   replace = TRUE)
+
+      }
+
+    } else if(clmnList$data_type == "Logical"){
+
+      # TODO Replace 0 and 1 by TRUE and FALSE
+
+      frame[clmn_name] <- sample(0:1,
+                                 size = nrow(frame),
+                                 replace = TRUE)
+
+    } else{
+
+      # For security, if the column type is not one of those options, abort the
+      # function. Ideally, this is not necessary as users should import the schema
+      # with the `import_schema` function.
+
+      abort("A column type is not supported.")
 
     }
 

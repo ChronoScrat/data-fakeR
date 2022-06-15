@@ -93,6 +93,21 @@ Required fields:
 
 `max` - The maximum bound of the random data
 
+-   Selection:
+
+Supported data types: `Character`, `Integer`, `Double`, `Date` and
+`Timestamp`
+
+Required fields:
+
+`options` - The options from which to select, separated by **comma**
+(without a whitespace between values)
+
+`prob` - (Optional) The probabilities for each option, separated by
+**comma** (without a whitespace between values.) If provided, the number
+of probabilities *must* be equal to the number of options. If not
+provided, all options will have the same probability to be chosen.
+
 -   Sequential:
 
 Supported data types: `Integer`, `Double`, `Date` and `Timestamp`
@@ -124,7 +139,7 @@ complex operations may fail.
 ## Contributing
 
 If you want to contribute to this package, please read the [contribution
-guide](https://github.com/ChronoScrat/data-fakeR/.github/CONTRIBUTING.md).
+guide](https://github.com/ChronoScrat/data-fakeR/blob/main/.github/CONTRIBUTING.md).
 Also read the [TODO
-list](https://github.com/ChronoScrat/data-fakeR/.github/TODO.md) with
-planned addition to the package.
+list](https://github.com/ChronoScrat/data-fakeR/blob/main/.github/TODO.md)
+with planned addition to the package.
