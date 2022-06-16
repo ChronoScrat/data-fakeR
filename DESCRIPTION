@@ -1,7 +1,7 @@
 Package: data.fakeR
 Type: Package
 Title: Data FakeR: Generate fake Data in R
-Version: 0.1.0
+Version: 0.1.1
 Author: Nathanael Rolim
 Maintainer: Nathanael Rolim <nathanael.rolim@gmail.com>
 Description: An R version of dunnhumby's data-faker. It allows users to generate

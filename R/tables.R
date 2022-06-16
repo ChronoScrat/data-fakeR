@@ -143,7 +143,7 @@ create_column <- function(clmnList, frame){
 
       frame[clmn_name] <- lubridate::as_datetime( runif( nrow(frame), min = min, max = max ) )
 
-    } else if(clmnList$data_type == "Selection"){ # Logical
+    } else if(clmnList$data_type == "Selection"){
 
       # First, get all options in a vector:
 
@@ -153,12 +153,12 @@ create_column <- function(clmnList, frame){
       # we must get them into a vector and verify if *that* vector has the same
       # length as our 'opts' vector.
 
-      if("prob" %in% names(clmnList)){
+      if("prob" %in% names(clmnList) == TRUE){
 
         probs <- as.numeric(unlist(strsplit(clmnList$prob, split = ",")))
 
         if(length(probs) != length(opts)){
-          abort("In column of type 'Sequential', the probabilities vector must have the same length as the options vector.")
+          rlang::abort("In column of type 'Sequential', the probabilities vector must have the same length as the options vector.")
         }
 
         frame[clmn_name] <- sample(opts,
@@ -179,11 +179,27 @@ create_column <- function(clmnList, frame){
 
     } else if(clmnList$data_type == "Logical"){
 
-      # TODO Replace 0 and 1 by TRUE and FALSE
+      if("prob" %in% names(clmnList) == TRUE){
 
-      frame[clmn_name] <- sample(0:1,
-                                 size = nrow(frame),
-                                 replace = TRUE)
+        probs <- as.numeric(unlist(strsplit(clmnList$prob, split = ",")))
+
+        if(length(probs) != 2){
+          rlang::abort("In columns of type 'Logical', the probabilities vector must have length 2.")
+        }
+
+        frame[clmn_name] <- as.logical(sample(0:1,
+                                              size = nrow(frame),
+                                              replace = TRUE,
+                                              prob = probs))
+
+      } else{
+
+        frame[clmn_name] <- as.logical(sample(0:1,
+                                              size = nrow(frame),
+                                              replace = TRUE))
+
+      }
+
 
     } else{
 
@@ -191,7 +207,7 @@ create_column <- function(clmnList, frame){
       # function. Ideally, this is not necessary as users should import the schema
       # with the `import_schema` function.
 
-      abort("A column type is not supported.")
+      rlang::abort("A column type is not supported.")
 
     }
 
