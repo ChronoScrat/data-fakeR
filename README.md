@@ -116,6 +116,16 @@ Required fields:
 
 `start` - The starting value `step` - The increment for each row
 
+-   Logical:
+
+Supported data types: `Logical`
+
+Fields:
+
+`prob` - (Optional) The probabilities for both FALSE and TRUE (in that
+order), separated by a **comma**. If not provided, both options will
+have the same probability of being chosen.
+
 -   Expression:
 
 Supported data types: `Character` (Optional)

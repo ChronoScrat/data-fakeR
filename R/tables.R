@@ -142,8 +142,10 @@ create_column <- function(clmnList, frame){
       max <- lubridate::as_date(max)
 
       frame[clmn_name] <- lubridate::as_datetime( runif( nrow(frame), min = min, max = max ) )
+    }
 
-    } else if(clmnList$data_type == "Selection"){
+
+    } else if(clmn_type == "Selection"){
 
       # First, get all options in a vector:
 
@@ -177,7 +179,7 @@ create_column <- function(clmnList, frame){
 
       }
 
-    } else if(clmnList$data_type == "Logical"){
+    } else if(clmn_type == "Logical"){
 
       if("prob" %in% names(clmnList) == TRUE){
 
@@ -210,9 +212,6 @@ create_column <- function(clmnList, frame){
       rlang::abort("A column type is not supported.")
 
     }
-
-  }
-
 
   return(frame)
 }
