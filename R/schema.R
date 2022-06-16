@@ -154,7 +154,17 @@ verify_schema <- function(list){
           )
         }
 
-      #} else if(clmn_type == "Selection"){
+      } else if(clmn_type == "Selection"){
+
+        # We do not make a check for the 'probabilities' option as it is optional.
+        # If not supplied by the user, all options will have the same prob.
+
+        if("options" %in% names(list$tables[[i]]$columns[[j]]) == FALSE){
+          rlang::abort(
+            glue::glue("Column {j} in Table {i} is of type 'Selection' but no values were provided.")
+          )
+        }
+
 
       } else if(clmn_type == "Sequential"){
 
