@@ -121,9 +121,9 @@ create_column <- function(clmnList, frame){
 
     if(clmnList$data_type == "Integer"){
 
-      # TODO Substitute `runif` by `sample`
-
-      frame[clmn_name] <- as.integer( runif( nrow(frame), min = min, max = max ) )
+      frame[clmn_name] <- sample(seq(min, max),
+                                 size = nrow(frame),
+                                 replace = TRUE)
 
     } else if(clmnList$data_type == "Double"){
 
